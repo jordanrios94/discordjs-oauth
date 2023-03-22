@@ -1,22 +1,22 @@
 import express from 'express';
-import { DISCORD_CLIENT_ID, DISCORD_SECRET_KEY, NODE_ENV, PORT, SECRET_KEY, SERVER_URL } from '@config';
-import passport from 'passport';
-import PassportDiscord from 'passport-discord';
+import { NODE_ENV, PORT, SECRET_KEY } from '@config';
 import { Routes } from '@interfaces/routes.interface';
 import session from 'express-session';
 import * as console from 'console';
+import { AuthClient } from '@interfaces/authClient.interface';
+
 class App {
   public app: express.Application;
   public env: string;
   public port: string | number;
 
-  constructor(routes: Routes[]) {
+  constructor(routes: Routes[], authClient: AuthClient) {
     this.app = express();
     this.env = NODE_ENV || 'development';
     this.port = PORT || 3000;
 
     this.initializeMiddlewares();
-    this.initializePassport();
+    new authClient(this.app);
     this.initializeRoutes(routes);
   }
   public getServer() {
@@ -49,35 +49,6 @@ class App {
     routes.forEach(route => {
       this.app.use('/', route.router);
     });
-  }
-
-  private initializePassport() {
-    this.app.use(passport.initialize());
-
-    const DiscordStrategy = PassportDiscord.Strategy;
-
-    const scopes = ['identify', 'email', 'guilds', 'guilds.join'];
-
-    passport.serializeUser((user, done) => {
-      done(null, user.id);
-    });
-
-    passport.deserializeUser((id, done) => {
-      done(null, id);
-    });
-    passport.use(
-      new DiscordStrategy(
-        {
-          clientID: DISCORD_CLIENT_ID,
-          clientSecret: DISCORD_SECRET_KEY,
-          callbackURL: SERVER_URL + '/auth/discord/callback',
-          scope: scopes,
-        },
-        function (accessToken, refreshToken, profile, callBack) {
-          return callBack(null, profile);
-        },
-      ),
-    );
   }
 }
 export default App;
