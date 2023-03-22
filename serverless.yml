@@ -1,0 +1,19 @@
+service: discord-auth
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: dev
+  region: eu-west-2
+  memorySize: 128
+functions:
+  app:
+    handler: src/app.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
