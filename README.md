@@ -2,7 +2,7 @@
 An example for HL on how to implement OAuth
 
 
-Set the following env vars like this: 
+Set the following env vars like this:
 ```
 # PORT
 PORT = 3000
@@ -16,3 +16,7 @@ DISCORD_CLIENT_ID = mildlysecret
 DISCORD_PORT = 53134
 ```
 in `.env.development.local`
+
+## To deploy
+
+run `npm run build` and run `sls deploy`

@@ -1,13 +1,23 @@
 service: discord-auth
+plugins:
+  - serverless-plugin-typescript
+
 provider:
   name: aws
   runtime: nodejs18.x
   stage: dev
   region: eu-west-2
   memorySize: 128
+
 functions:
   app:
-    handler: src/app.handler
+    handler: dist/server.handler
+    environment:
+      SECRET_KEY: ${ssm:/discord-auth/secret_key}
+      JWT_SECRET_KEY: ${ssm:/discord-auth/jwt_secret_key}
+      DISCORD_SECRET_KEY: ${ssm:/discord-auth/discord_secret_key}
+      DISCORD_CLIENT_ID: ${ssm:/discord-auth/discord_client_id}
+      DISCORD_PORT: ${ssm:/discord-auth/discord_port}
     events:
       - http:
           path: /
