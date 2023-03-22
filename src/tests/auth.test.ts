@@ -42,7 +42,7 @@ describe('Testing Auth', () => {
   // describe('[POST] /logout', () => {
   //   it('logout Set-Cookie Authorization=; Max-age=0', () => {
   //     const authRoute = new AuthRoute();
-  //     const app = new App([authRoute]);
+  //     const app = new AppExample([authRoute]);
 
   //     return request(app.getServer())
   //       .post('/logout')
