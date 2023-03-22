@@ -1,5 +1,5 @@
 import express from 'express';
-import { DISCORD_CLIENT_ID, DISCORD_SECRET_KEY, NODE_ENV, PORT, SECRET_KEY } from '@config';
+import { DISCORD_CLIENT_ID, DISCORD_SECRET_KEY, NODE_ENV, PORT, SECRET_KEY, SERVER_URL } from '@config';
 import passport from 'passport';
 import PassportDiscord from 'passport-discord';
 import { Routes } from '@interfaces/routes.interface';
@@ -70,7 +70,7 @@ class App {
         {
           clientID: DISCORD_CLIENT_ID,
           clientSecret: DISCORD_SECRET_KEY,
-          callbackURL: 'http://localhost:3000/auth/discord/callback',
+          callbackURL: SERVER_URL + '/auth/discord/callback',
           scope: scopes,
         },
         function (accessToken, refreshToken, profile, callBack) {

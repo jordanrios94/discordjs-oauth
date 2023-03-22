@@ -16,14 +16,14 @@ provider:
 
 functions:
   app:
-    handler: src/server.handler
+    handler: dist/server.handler
     environment:
       SECRET_KEY: ${ssm:/${self:service}/secret_key}
       JWT_SECRET_KEY: ${ssm:/${self:service}/jwt_secret_key}
       DISCORD_SECRET_KEY: ${ssm:/${self:service}/discord_secret_key}
       DISCORD_CLIENT_ID: ${ssm:/${self:service}/discord_client_id}
       DISCORD_PORT: ${ssm:/${self:service}/discord_port}
-      ACCOUNT_ID: ${aws:accountId}-${self:service}
+      SERVER_URL: ${ssm:/${self:service}/server_url}
     events:
       - http:
           path: /

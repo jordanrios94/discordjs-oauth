@@ -16,4 +16,5 @@ export const {
   DISCORD_PORT,
   SECRET_KEY,
   JWT_SECRET_KEY,
+  SERVER_URL,
 } = process.env;
