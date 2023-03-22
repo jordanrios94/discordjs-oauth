@@ -8,16 +8,22 @@ provider:
   stage: dev
   region: eu-west-2
   memorySize: 128
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+      Resource: "arn:aws:ssm:${self:provider.region}:${aws:accountId}:parameter/${self:service}-*"
 
 functions:
   app:
     handler: dist/server.handler
     environment:
-      SECRET_KEY: ${ssm:/discord-auth/secret_key}
-      JWT_SECRET_KEY: ${ssm:/discord-auth/jwt_secret_key}
-      DISCORD_SECRET_KEY: ${ssm:/discord-auth/discord_secret_key}
-      DISCORD_CLIENT_ID: ${ssm:/discord-auth/discord_client_id}
-      DISCORD_PORT: ${ssm:/discord-auth/discord_port}
+      SECRET_KEY: ${ssm:/${self:service}/secret_key}
+      JWT_SECRET_KEY: ${ssm:/${self:service}/jwt_secret_key}
+      DISCORD_SECRET_KEY: ${ssm:/${self:service}/discord_secret_key}
+      DISCORD_CLIENT_ID: ${ssm:/${self:service}/discord_client_id}
+      DISCORD_PORT: ${ssm:/${self:service}/discord_port}
+      ACCOUNT_ID: ${aws:accountId}-${self:service}
     events:
       - http:
           path: /
