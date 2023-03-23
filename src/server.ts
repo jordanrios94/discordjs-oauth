@@ -2,8 +2,12 @@ import App from '@/app';
 import AuthRoute from '@routes/auth';
 import serverless from 'serverless-http';
 import InitializePassport from '@/initializePassport';
+import { Router } from 'express';
+import passport from 'passport';
+import authController from '@controllers/auth.controller';
 
-const app = new App([new AuthRoute()], InitializePassport);
+const authRoute = new AuthRoute(Router(), passport, authController);
+const app = new App([authRoute], InitializePassport);
 
 app.listen();
 
